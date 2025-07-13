@@ -137,7 +137,7 @@ class PKG:
 			offset += file.size
 		return ret
 
-	def read(self, fn: str):
+	def read(self, fn: str, decompress=True):
 		if fn not in self.files:
 			raise KeyError(f"{fn} not in file list")
 		entry = self.files[fn]
@@ -151,6 +151,10 @@ class PKG:
 			if self.encrypted:
 				xor_buffer(data, key, entry.offset)
 			entry.data = bytes(data)
+			
+		if decompress and fn.endswith(".lz4"):
+			from lz4fwrapper import decompress_frame
+			return decompress_frame(entry.data)
 		return entry.data
 
 	def write(self, archive: str|Path = "", outdir: str|Path = ""):
@@ -261,13 +265,12 @@ class PKG:
 
 	def export(self, fn: str, outdir: str|Path, decompress=True):
 		outdir = Path(outdir)
-		data = self.read(fn)
+		data = self.read(fn, decompress)
 		entry = self.files[fn]
 		fp = outdir / entry.name
 		if decompress and fp.suffix == ".lz4":
+			# Already decompressed by read, just change suffix
 			fp = fp.with_suffix("")
-			from lz4fwrapper import decompress_frame
-			data = decompress_frame(data)
 		if fp.exists():
 			if not CHECK_CONTENTS_BEFORE_BACKUP or fp.read_bytes() != data:
 				fp.rename(check_backup(fp))
