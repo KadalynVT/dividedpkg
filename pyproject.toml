@@ -1,0 +1,6 @@
+[build-system]
+requires = ["setuptools", "Cython"]
+
+[project]
+name = "dividedpkg"
+version = "1.0.0"
