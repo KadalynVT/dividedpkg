@@ -1,4 +1,4 @@
-from setuptools import setup, Extension
+from setuptools import find_packages, setup, Extension
 from Cython.Build import cythonize
 
 ext = [
@@ -18,4 +18,5 @@ ext = [
 
 setup(
 	ext_modules=cythonize(ext, compiler_directives={"language_level": 3}),
+	packages=find_packages(include=['dividedpkg', 'dividedpkg.*']),
 )
