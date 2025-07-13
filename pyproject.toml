@@ -7,3 +7,6 @@ version = "1.0.0"
 dependencies = [
   "pefile",
 ]
+
+[tool.setuptools.package-data]
+dividedpkg = ["key.dat"]
