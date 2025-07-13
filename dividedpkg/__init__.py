@@ -378,3 +378,7 @@ class FileEntry:
 	# Extra info
 	offset: int
 	data: bytes = b""
+
+	def compress(self, data: bytes):
+		from lz4fwrapper import compress_frame
+		self.data = bytearray(compress_frame(data, 12))

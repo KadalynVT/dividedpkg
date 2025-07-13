@@ -4,3 +4,6 @@ requires = ["setuptools", "Cython"]
 [project]
 name = "dividedpkg"
 version = "1.0.0"
+dependencies = [
+  "pefile",
+]
