@@ -98,7 +98,7 @@ def identify_return_value(data: bytes, addr: int) -> None|bytes:
 		return b"\x33\xc0\x90"
 	elif data[addr] == 0xb8:
 		# Replace MOV EAX,nn with MOV EAX,0
-		if data[addr+1:addr+5] == "\0\0\0\0":
+		if data[addr+1:addr+5] == b"\0\0\0\0":
 			# Already patched
 			return None
 		return b"\xb8\0\0\0\0"
